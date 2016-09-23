@@ -1,0 +1,21 @@
+{% extends '::admin.index.html.twig' %}
+
+{% block title %}My Blog | Post Authors{% endblock %}
+
+{% block body %}
+
+    {% for author in authors %}
+        <article>
+            <p>Author: {{ author.name }}</p>
+            <p>Bio: {{ author.bio }}</p>
+        </article>
+
+    {% endfor %}
+
+    {% if authors is empty %}
+        <p>No post authors, for now!</p>
+    {% endif %}
+
+    <a href="#">Create a new post author</a>
+
+{% endblock %}

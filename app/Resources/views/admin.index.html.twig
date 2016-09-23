@@ -1,0 +1,7 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block navigation %}
+    <div>{{ app.user.username }} | <a href="{{ url('fos_user_security_logout') }}">Logout</a></div>
+{% endblock %}

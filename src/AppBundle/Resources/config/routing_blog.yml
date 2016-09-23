@@ -1,0 +1,39 @@
+homepage:
+    path: /
+    defaults: {_controller: AppBundle:Default:index}
+
+post.edit:
+    path: /edit/{id}
+    defaults: {_controller: AppBundle:Default:edit}
+
+post.create:
+    path: /create
+    defaults: { _controller: AppBundle:Default:create}
+
+post.delete:
+    path: /delete/{id}
+    defaults: { _controller: AppBundle:Default:delete}
+
+post.show:
+    path: /show/{id}
+    defaults: {_controller: AppBundle:Default:show}
+
+post.comment.delete:
+    path: /post/comment/delete/{id}
+    defaults: {_controller: AppBundle:Comment:byPostDelete}
+
+post.show.by.tags:
+    path: /tag/{tag_names}
+    defaults: {_controller:AppBundle:Default:showByTags}
+
+post.authors:
+    path: /post/authors
+    defaults: {_controller:AppBundle:PostAuthor:index}
+
+tag.list:
+    path: /tags
+    defaults: {_controller: AppBundle:Tag:list}
+
+tag.delete:
+    path: /tag/delete/{id}
+    defaults: {_controller: AppBundle:Tag:delete}

@@ -1,0 +1,6 @@
+default:
+  extensions:
+    Behat\Symfony2Extension: ~
+    Behat\MinkExtension:
+      goutte: ~
+      base_url: http://10.10.10.10:8000

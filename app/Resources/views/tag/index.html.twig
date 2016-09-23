@@ -1,0 +1,21 @@
+{% extends '::admin.index.html.twig' %}
+
+{% block title %}My Blog - Tags{% endblock %}
+
+{% block body %}
+
+    <h1>Tags</h1>
+
+    {% if tags is empty %}
+        <p>No tags, for now!</p>
+    {% else %}
+        <ul>
+            {% for tag in tags %}
+                <li>{{ tag.name }} <a href="{{ url('tag.delete', {id:tag.id}) }}">Delete</a></li>
+            {% endfor %}
+        </ul>
+    {%  endif %}
+
+    <a href="#">Create a new tag</a> | <a href="{{ url('homepage') }}">Back to the list</a>
+
+{% endblock %}

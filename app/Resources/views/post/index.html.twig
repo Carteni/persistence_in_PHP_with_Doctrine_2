@@ -1,0 +1,29 @@
+{% extends '::admin.index.html.twig' %}
+
+{% block body %}
+    {% for result in posts %}
+        {% set post = result[0] %}
+        {% set commentCount = result[1] %}
+        <article>
+            <h1><a id="{{ post.title }}" href="{{ url('post.show', {id:post.id}) }}">{{ post.title }}</a>
+            | Comments: {{ commentCount }}</h1>
+            Date of publication: {{ post.publicationDate|date('Y-m-d H:i:s') }}
+            <p>{{ post.body|nl2br }}</p>
+            <ul>
+                <li>
+                    <a href="{{ url('post.edit', {id:post.id}) }}">Edit this post</a>
+                </li>
+                <li>
+                    <a href="{{ url('post.delete', {id:post.id}) }}">Delete this post</a>
+                </li>
+            </ul>
+        </article>
+    {% endfor %}
+
+    {% if posts is empty %}
+        <p>No post, for now!</p>
+    {% endif %}
+
+    <a href="{{ url('post.create') }}">Create a new post</a>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+#app:
+    #resource: "@AppBundle/Controller/"
+    #type:     annotation
+
+root:
+    path: /
+    defaults:
+      _controller: FrameworkBundle:Redirect:redirect
+      route: homepage
+      permanent: true
+
+blog:
+  resource: "@AppBundle/Resources/config/routing_blog.yml"
+  prefix: /admin/blog
+
+fos_user:
+  resource: "@FOSUserBundle/Resources/config/routing/all.xml"

@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.body) }}
+    {{ form_row(form.publicationDate) }}
+    <h3>Tags</h3>
+    <ul class="tags" data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}">
+        {% for tag in form.tags %}
+            <li>{{ form_row(tag.name) }}</li>
+        {% endfor %}
+    </ul>
+{{ form_end(form) }}

@@ -1,0 +1,10 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PhpUndefinedVariableInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ENABLE_IN_FILE_SCOPE" value="false" />
+      <option name="REPORT_CAN_BE_UNDEFINED" value="false" />
+      <option name="IGNORE_INCLUDE" value="false" />
+    </inspection_tool>
+  </profile>
+</component>
