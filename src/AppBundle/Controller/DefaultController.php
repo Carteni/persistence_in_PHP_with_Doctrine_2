@@ -7,6 +7,7 @@ use AppBundle\Entity\Post;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\PostType;
 use Doctrine\ORM\UnitOfWork;
+use Predis\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,10 +23,16 @@ class DefaultController extends Controller {
    * @return \Symfony\Component\HttpFoundation\Response
    */
   public function indexAction(Request $request) {
+
     $posts = $this
       ->getDoctrine()
       ->getRepository('AppBundle:Post')
       ->findWithCommentCount();
+
+    $this->get('snc_redis.default')->incr('foo:bar');
+
+    $this->get('app.post_repository')
+      ->getDefaultCache()->del('foo:bar');
 
     // replace this example code with whatever you need
     return $this->render(':post:index.html.twig', [
@@ -76,6 +83,13 @@ class DefaultController extends Controller {
         $changed = TRUE;
       }
       $em->flush();
+
+      /**
+       * @var ClientInterface $cacheDriver
+       */
+      $client = $this->get('snc_redis.doctrine');
+      $client->del(array("[".md5('postWithComments')."][1]"));
+
       $processed = TRUE;
     }
     return $processed;

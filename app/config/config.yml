@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    redis_dns: redis://localhost
 
 framework:
     #esi:             ~
@@ -26,7 +27,8 @@ framework:
     trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
+        #handler_id:  session.handler.native_file
+        handler_id:  snc_redis.session.handler
         save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
     fragments:       ~
     http_method_override: true
@@ -46,7 +48,7 @@ doctrine:
         dbname:   "%database_name%"
         user:     "%database_user%"
         password: "%database_password%"
-        charset:  utf8mb4
+        #charset:  utf8mb4
         #default_table_options:
             #charset: utf8mb4
             #collate: utf8mb4_unicode_ci
@@ -57,10 +59,23 @@ doctrine:
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #     path:     "%database_path%"
+        schema_filter: ~^(?!t_)~
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        # enable metadata caching
+        metadata_cache_driver:
+            type: service
+            id: snc_redis.doctrine
+        # enable query caching
+        query_cache_driver:
+            type: service
+            id: snc_redis.doctrine
+        # enable results caching
+        result_cache_driver:
+            type: service
+            id: snc_redis.doctrine
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -75,3 +90,44 @@ fos_user:
     db_driver: orm
     firewall_name: secured_area
     user_class: \AppBundle\Entity\User
+
+# Database Migrations
+doctrine_migrations:
+  dir_name: "%kernel.root_dir%/DoctrineMigrations"
+  namespace: Application\Migrations
+  table_name: migration_versions
+  name: Application Migrations
+
+
+# Redis (http://olegpuzanov.com/2015/02/01/using-redis-for-doctrine-caching-in-symfony2/)
+# https://www.ekreative.com/blog/three-symfony2-database-optimisation-tips-to-implement-today
+snc_redis:
+    # configure predis as client
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: '%redis_dns%'
+        doctrine:
+            type: predis
+            alias: doctrine
+            dsn: '%redis_dns%'
+        session:
+             type: predis
+             alias: session
+             dsn: '%redis_dns%'
+    # configure doctrine caching
+    doctrine:
+        metadata_cache:
+            client: doctrine
+            entity_manager: default          # the name of your entity_manager connection
+            document_manager: default        # the name of your document_manager connection
+        result_cache:
+            client: doctrine
+            entity_manager: [default]  # you may specify multiple entity_managers
+        query_cache:
+            client: doctrine
+            entity_manager: default
+    # configure session caching
+    session:
+        client: session

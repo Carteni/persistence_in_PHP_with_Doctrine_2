@@ -33,6 +33,12 @@ abstract class Author {
 
   /**
    * @var string
+   * @ORM\Column(type="text", length=180)
+   */
+  protected $surname;
+
+  /**
+   * @var string
    *
    * @ORM\Column(type="text", length=180)
    */

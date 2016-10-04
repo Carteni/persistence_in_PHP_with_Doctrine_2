@@ -7,3 +7,12 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+  # http://php-and-symfony.matthiasnoback.nl/2014/05/inject-a-repository-instead-of-an-entity-manager/
+  app.post_repository:
+      class: AppBundle\Entity\PostRepository
+      factory: ['@doctrine.orm.default_entity_manager', getRepository]
+      arguments:
+          - AppBundle\Entity\Post
+      tags:
+          - { name: 'repository.redis.default' }

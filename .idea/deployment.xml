@@ -9,6 +9,26 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="Blog/Production">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/var" />
+            <excludedPath local="true" path="$PROJECT_DIR$/vendor" />
+            <excludedPath local="true" path="$PROJECT_DIR$/features" />
+            <excludedPath local="true" path="$PROJECT_DIR$/tests" />
+            <excludedPath local="true" path="$PROJECT_DIR$/.bowerrc" />
+            <excludedPath local="true" path="$PROJECT_DIR$/.gitignore" />
+            <excludedPath local="true" path="$PROJECT_DIR$/behat.yml" />
+            <excludedPath local="true" path="$PROJECT_DIR$/db.sql" />
+            <excludedPath local="true" path="$PROJECT_DIR$/db_diagram.mwb" />
+            <excludedPath local="true" path="$PROJECT_DIR$/phpunit.xml.dist" />
+            <excludedPath local="true" path="$PROJECT_DIR$/README.md" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
       <paths name="conferences-em">
         <serverdata>
           <mappings>
