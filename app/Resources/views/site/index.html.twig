@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <h1>Site Posts</h1>
+    <ul>
+        {% for post in posts %}
+            <li>Post #{{ loop.index  }} {{ post.title }}</li>
+        {% endfor %}
+    </ul>
+    <hr />
+    The random number is: {{ number }}
+    <hr />
+    Now is: {{ 'now'|date  }} / the date is: {{ the_date|date }} / the diff is: {{ the_date|dateDiff }}
+    <hr />
+    <p>Location: {{ location }}</p>
+    {{ form(form) }}
+{% endblock %}

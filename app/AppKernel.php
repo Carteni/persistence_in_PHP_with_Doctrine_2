@@ -20,6 +20,10 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
 
             new Snc\RedisBundle\SncRedisBundle(),
+
+            new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
+
+            new \Ivory\GoogleMapBundle\IvoryGoogleMapBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

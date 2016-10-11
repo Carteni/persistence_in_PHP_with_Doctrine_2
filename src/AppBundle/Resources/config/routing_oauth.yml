@@ -1,0 +1,10 @@
+github_login_controller:
+  path: /github
+  defaults: { _controller: AppBundle:GitHub:ghLogin }
+
+github_login:
+  path: /github_login
+
+github_authorize:
+  path: /github_authorize
+  defaults: { _controller: AppBundle:GitHub:ghAuthorize }

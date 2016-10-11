@@ -16,3 +16,55 @@ services:
           - AppBundle\Entity\Post
       tags:
           - { name: 'repository.redis.default' }
+
+  app.twig.extension:
+      class: AppBundle\Twig\AppExtension
+      tags:
+          - { name: twig.extension }
+
+
+  app.form.type.coordinate:
+      class: AppBundle\Form\Type\CoordinateType
+      arguments: ['@ivory_google_map.map']
+      tags:
+          - { name: form.type, alias: coordinate }
+
+
+
+
+
+
+  app.github.authentication_listener:
+      class: AppBundle\Security\GitHub\AuthenticationListener
+      parent: security.authentication.listener.abstract
+      abstract: true
+      public: false
+
+  app.github.authentication_provider:
+      class: AppBundle\Security\GitHub\AuthenticationProvider
+      public: false
+
+  app.github.authentication.entry_point.oauth:
+      class: AppBundle\Security\Http\EntryPoint\OAuthEntryPoint
+      public: false
+      abstract: true
+      arguments: ['@app.github.authorize.redirect_response']
+
+  app.github.authorize.redirect_response:
+      class: AppBundle\Security\GitHub\AuthorizeRedirectResponse
+      arguments: ['@?request_stack', '@security.http_utils', '@http_kernel']
+
+  app.github.user_provder:
+      class: AppBundle\Security\GitHub\UserProvider
+      arguments: ['@fos_user.user_manager']
+
+  app.security.access.valid_user:
+      class: AppBundle\EventListener\ValidUserListener
+      arguments: ['@annotation_reader', '@router', '@session', '@security.token_storage', '@validator']
+      tags:
+          - { name: kernel.event_listener, event: kernel.controller, method: onKernelController}
+
+  app.security.access.api:
+      class: AppBundle\EventListener\ApiCustomCookieListener
+      tags:
+          - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}

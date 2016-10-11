@@ -22,7 +22,15 @@ class RepositoryRedisCompilerPass implements CompilerPassInterface {
     $taggedServices = $container->findTaggedServiceIds('repository.redis.default');
     foreach($taggedServices as $id => $tags) {
      $container->getDefinition($id)->addMethodCall('setDefaultCache',
-       array(new Reference('snc_redis.defaultl')));
+       array(new Reference('snc_redis.default')));
     }
+
+    $container
+      ->getDefinition('app.github.authentication_listener')
+      ->addMethodCall('setKeys', array(
+        $container->getParameter('github.oauth.client_id'),
+        $container->getParameter('github.oauth.client_secret')
+      ))
+    ;
   }
 }

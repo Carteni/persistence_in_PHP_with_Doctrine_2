@@ -1,17 +1,27 @@
-#app:
-    #resource: "@AppBundle/Controller/"
-    #type:     annotation
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
 
-root:
-    path: /
-    defaults:
-      _controller: FrameworkBundle:Redirect:redirect
-      route: homepage
-      permanent: true
+# http://foshttpcachebundle.readthedocs.io/en/latest/features/user-context.html
+user_context_hash:
+    path: /_fos_user_context_hash
+
+#root:
+#    path: /
+#    defaults:
+#      _controller: FrameworkBundle:Redirect:redirect
+#      route: homepage
+#      permanent: true
+
+site:
+    resource: "@AppBundle/Resources/config/routing_site.yml"
 
 blog:
   resource: "@AppBundle/Resources/config/routing_blog.yml"
   prefix: /admin/blog
+
+oauth:
+  resource: "@AppBundle/Resources/config/routing_oauth.yml"
 
 fos_user:
   resource: "@FOSUserBundle/Resources/config/routing/all.xml"

@@ -2,14 +2,26 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
+$env = getenv('APP_ENV') ?? 'prod';
+$debug = (bool) getenv('APP_DEBUG') ?? 'false';
+
 /**
  * @var Composer\Autoload\ClassLoader
  */
 $loader = require __DIR__.'/../app/autoload.php';
-include_once __DIR__.'/../var/bootstrap.php.cache';
+if ($debug) {
+    \Symfony\Component\Debug\Debug::enable();
+}
 
-$kernel = new AppKernel('prod', false);
-$kernel->loadClassCache();
+if (!$debug) {
+    include_once __DIR__.'/../var/bootstrap.php.cache';
+}
+
+//$kernel = new AppKernel('prod', false);
+$kernel = new AppKernel($env, $debug);
+if (!$debug) {
+    $kernel->loadClassCache();
+}
 //$kernel = new AppCache($kernel);
 
 // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter

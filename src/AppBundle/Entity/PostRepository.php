@@ -102,7 +102,7 @@ class PostRepository extends EntityRepository
 
         $q->useQueryCache(true);
 
-        $q->useResultCache(true, 1200, $cacheId);
+        //$q->useResultCache(true, 1200, $cacheId);
 
         return $q->getResult();
     }

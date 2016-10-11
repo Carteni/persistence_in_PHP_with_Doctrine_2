@@ -1,7 +1,7 @@
 <?php
 
-use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
+use FOS\HttpCacheBundle\SymfonyCache\EventDispatchingHttpCache;
 
-class AppCache extends HttpCache
+class AppCache extends EventDispatchingHttpCache
 {
 }

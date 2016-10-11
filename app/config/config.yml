@@ -24,7 +24,7 @@ framework:
         engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
-    trusted_proxies: ~
+    trusted_proxies: [192.168.56.101,192.168.56.102]
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         #handler_id:  session.handler.native_file
@@ -38,6 +38,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - 'form/widgets.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -131,3 +133,45 @@ snc_redis:
     # configure session caching
     session:
         client: session
+        ttl: 1200
+
+#FOSHttpCache Bundle
+fos_http_cache:
+    proxy_client:
+        symfony:
+            servers: 127.0.0.1
+            base_url: '%fos_http_cache_base_url%'
+    user_context:
+        enabled: true
+        role_provider: true
+    cache_control:
+        defaults:
+            overwrite: false
+        rules:
+            -
+                match:
+                    #path: ^/site$ # site homepage
+                    attributes:
+                        _route: site_homepage
+                headers:
+                    overwrite: true
+                    reverse_proxy_ttl: 610
+                    cache_control:
+                        public: true
+                        max_age: 510
+                    vary: My-Custom-Blog-Header
+    invalidation:
+        enabled: true
+        rules:
+            -
+                match:
+                    attributes:
+                        _route: "post.edit|post.create|post.delete"
+                routes:
+                    site_homepage: ~
+
+# GitHub OAuth
+app:
+    github_oauth:
+        client_id: '03d687dee778a74bda17'
+        client_secret: '6e46fcd7bd01d6bfb8dfff1c3045484c6816f42b'

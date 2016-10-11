@@ -1,0 +1,55 @@
+{% block coordinate_widget %}
+    {{ google_map_container(map) }}
+    {{ google_map_js(map) }}
+    <script type="text/javascript">
+
+        google.maps.event.addListener({{ map.javascriptVariable  }},'click',setValue);
+
+        function setValue(event) {
+            var input = document.getElementById('{{id}}');
+            input.value = event.latLng;
+        }
+    </script>
+    {% set read_only = true %}
+    {# block('hidden_widget') #}
+    {{ block('form_widget_simple') }}
+{% endblock %}
+
+{% block address_row %}
+    <div class="address_box" style="border: 1px solid red; padding: 8px;">
+        <h5 style="">{{ form_label(form, 'Your Address') }}</h5>
+        {{ form_errors(form) }}
+        {{ form_widget(form, {'attr':{'class':'address_field'}}) }}
+    </div>
+    {# Ajax #}
+    <script>
+        window.onload = function(){
+            var $country = $("#form_address_country");
+            $country.change(function(){
+                // ... retrieve the corresponding form.
+                var $form = $(this).closest('form');
+                if('USA' === $country.val()) {
+                    // Simulate form data, but only include the selected sport value.
+                    var data = {};
+                    data[$country.attr('name')] = $country.val();
+                    // Submit data via AJAX to the form's action path.
+                    $.ajax({
+                        url: $form.attr('action'),
+                        type: $form.attr('method'),
+                        data: data,
+                        success: function (html) {
+                            // Replace current position field ...
+                            $('#form_address').append(
+                                // ... with the returned one from the AJAX response.
+                                $(html).find('#form_address_state').parent()
+                            );
+                            // Position field now displays the appropriate positions.
+                        }
+                    })
+                } else {
+                    $('#form_address_state').parent().remove();
+                }
+            });
+        }
+    </script>
+{% endblock %}

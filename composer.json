@@ -33,7 +33,12 @@
         "friendsofsymfony/user-bundle": "dev-master",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "snc/redis-bundle": "2.x-dev",
-        "predis/predis": "^1.0"
+        "predis/predis": "^1.0",
+        "friendsofsymfony/http-cache-bundle" : "~1.0",
+        "symfony/expression-language": "^3.1",
+
+        "imagine/imagine": "~0.5.0",
+        "petrepatrasc/google-map-bundle": "^2.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -45,7 +50,9 @@
         "behat/mink-selenium2-driver": "dev-master",
         "behat/symfony2-extension": "dev-master",
         "behat/mink-browserkit-driver": "dev-master",
-        "behat/mink-goutte-driver": "dev-master"
+        "behat/mink-goutte-driver": "dev-master",
+
+        "phpunit/phpunit": "^5.5"
     },
     "scripts": {
         "symfony-scripts": [
