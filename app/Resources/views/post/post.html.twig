@@ -1,6 +1,7 @@
 {% extends '::admin.index.html.twig' %}
 
-{% block body %}
+{% block admin_content %}
+    {{ parent() }}
     <h1>{% block body_title %}{% endblock %}</h1>
     {% block body_form %}{% endblock %}
     {% block body_details %}{% endblock %}

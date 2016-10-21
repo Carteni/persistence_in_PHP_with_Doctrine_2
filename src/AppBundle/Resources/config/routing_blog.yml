@@ -37,3 +37,7 @@ tag.list:
 tag.delete:
     path: /tag/delete/{id}
     defaults: {_controller: AppBundle:Tag:delete}
+
+media_hasgallery.unlink:
+    path: /{postId}/mediaHasGallery/unlink/{id}
+    defaults: {_controller: AppBundle:Media:hasGalleryUnlink}

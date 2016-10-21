@@ -34,5 +34,7 @@ class AppExtension extends Extension
               $config['github_oauth']['client_secret']
             );
         }
+
+        $container->setParameter('admin_navigation', $config['dashboard']);
     }
 }

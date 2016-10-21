@@ -1,12 +1,12 @@
 {% extends '::admin.index.html.twig' %}
 
-{% block body %}
+{% block admin_content %}
+    {{ parent() }}
     {% for result in posts %}
         {% set post = result[0] %}
         {% set commentCount = result[1] %}
         <article>
-            <h1><a id="{{ post.title }}" href="{{ url('post.show', {id:post.id}) }}">{{ post.title }}</a>
-            | Comments: {{ commentCount }}</h1>
+            <h1><a id="{{ post.title }}" href="{{ url('post.show', {id:post.id}) }}">{{ post.title }}</a> ({{ post.slug }}) | Comments: {{ commentCount }}</h1>
             Date of publication: {{ post.publicationDate|date('Y-m-d H:i:s') }}
             <p>{{ post.body|nl2br }}</p>
             <ul>

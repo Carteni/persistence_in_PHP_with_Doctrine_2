@@ -2,6 +2,8 @@
 # http://symfony.com/doc/current/book/security.html
 security:
 
+    session_fixation_strategy: migrate
+
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         fos_userbundle:
@@ -30,9 +32,9 @@ security:
             anonymous: true
 
             #form_login:
-            #    provider: fos_userbundle
-            #    csrf_token_generator: security.csrf.token_manager
-            #    default_target_path: homepage
+             #   provider: fos_userbundle
+             #   csrf_token_generator: security.csrf.token_manager
+             #   default_target_path: homepage
 
             github:
                 login_path: github_authorize

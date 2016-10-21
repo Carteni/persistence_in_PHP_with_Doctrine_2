@@ -11,7 +11,7 @@ services:
   # http://php-and-symfony.matthiasnoback.nl/2014/05/inject-a-repository-instead-of-an-entity-manager/
   app.post_repository:
       class: AppBundle\Entity\PostRepository
-      factory: ['@doctrine.orm.default_entity_manager', getRepository]
+      factory: ['@doctrine.orm.entity_manager', getRepository]
       arguments:
           - AppBundle\Entity\Post
       tags:
@@ -29,9 +29,25 @@ services:
       tags:
           - { name: form.type, alias: coordinate }
 
+  app.form.type.post:
+        class: AppBundle\Form\Type\PostType
+        arguments: ['@sonata.media.manager.media']
+        tags:
+            - { name: form.type, alias: post }
+
+  app.post.listener:
+      class: AppBundle\EventListener\PostEventListener
+      arguments: ['@slugify']
+      tags:
+        - { name: doctrine.event_listener, event: preUpdate }
+        - { name: doctrine.event_listener, event: prePersist }
 
 
-
+  acme.hello.menu.voter.request:
+          class: AppBundle\Menu\RequestVoter
+          arguments: ['@request_stack']
+          tags:
+            - { name: knp_menu.voter }
 
 
   app.github.authentication_listener:

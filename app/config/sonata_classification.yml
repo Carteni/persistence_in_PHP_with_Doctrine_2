@@ -1,0 +1,15 @@
+# sonata_classification.yml
+
+sonata_classification:
+    class:
+        collection:     Application\Sonata\ClassificationBundle\Entity\Collection
+        tag:            Application\Sonata\ClassificationBundle\Entity\Tag
+        category:       Application\Sonata\ClassificationBundle\Entity\Category
+
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    SonataClassificationBundle: ~
+                    ApplicationSonataClassificationBundle: ~

@@ -13,6 +13,15 @@ class ApiCustomCookieListener
 {
     public function onKernelRequest(GetResponseEvent $event)
     {
+        // We only secure urls in our API
+        if (strpos(
+            $event->getRequest()->getPathInfo(),
+            '/api/'
+          ) !== 0
+        ) {
+            return;
+        }
+
         $cookie = $event->getRequest()->headers->get('cookie');
         $double = $event->getRequest()->headers->get('X-Doubled-Cookie');
 

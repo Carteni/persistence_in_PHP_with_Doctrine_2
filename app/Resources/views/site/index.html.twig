@@ -1,10 +1,10 @@
 {% extends '::base.html.twig' %}
 
-{% block body %}
+{% block content %}
     <h1>Site Posts</h1>
     <ul>
         {% for post in posts %}
-            <li>Post #{{ loop.index  }} {{ post.title }}</li>
+            <li><a href="{{ url('post.slugify', {slug:post.slug}) }}">Post #{{ loop.index  }} {{ post.title }}</a></li>
         {% endfor %}
     </ul>
     <hr />
@@ -14,4 +14,10 @@
     <hr />
     <p>Location: {{ location }}</p>
     {{ form(form) }}
+
+    {{ sonata_block_render(
+    {'type': 'sonata.block.service.template' },
+    {'template': ':block:footer.html.twig' })
+    }}
+
 {% endblock %}

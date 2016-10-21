@@ -1,7 +1,47 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}My Blog{% endblock %}
-
-{% block navigation %}
-    <div>{{ app.user.username }} | <a href="{{ url('fos_user_security_logout') }}">Logout</a></div>
+{% block stylesheets_vendor %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/metisMenu/dist/metisMenu.min.css') }}">
 {% endblock %}
+
+{% block title %}My Blog Admin{% endblock %}
+
+{% block navbar_container_type %}-fluid{% endblock %}
+
+{% block navbar_collapse %}
+    <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">{{ app.user.username }}</a></li>
+            <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url('fos_user_security_logout') }}">Logout</a></li>
+        </ul>
+    </div><!--/.nav-collapse -->
+{% endblock %}
+
+{% block container_type %}-fluid{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <aside class="col-sm-3 col-md-2 sidebar">
+            <nav class="sidebar-nav">
+                {{ knp_menu_render('AppBundle:Builder:dashboardMenu', {currentClass:'active'}) }}
+            </nav>
+        </aside>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+            {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+            {% block admin_content %}{% endblock %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/vendor/metisMenu/dist/metisMenu.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/bootstrap.js') }}"></script>
+{% endblock %}
+

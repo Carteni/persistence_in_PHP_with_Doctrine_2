@@ -3,8 +3,21 @@
 {% block body_title %}{{ post.title }}{% endblock %}
 {% block body_details %}
     <article>
-        Date of publication: {{ post.publicationDate|date('Y-m-d H:i:s') }}
+        <p>Date of publication: {{ post.publicationDate|date('Y-m-d H:i:s') }}</p>
+        {% media post.poster, 'big' %}
         <p>{{ post.body|nl2br }}</p>
+
+
+        {% if post.gallery is not null %}
+            <hr />
+            <h3>Post Gallery</h3>
+            {% for image in post.gallery.galleryHasMedias %}
+                <div class="item">
+                    {% media image.media, 'big' %} [<a href="{{ url('media_hasgallery.unlink',{postId: post.id, id:image.id}) }}">Unlink</a>]
+                </div>
+            {% endfor %}
+        {%  endif %}
+
         {% if post.comments is not empty %}
             <h2>Comments</h2>
             {%  for comment in post.comments %}
@@ -32,4 +45,5 @@
         <h2>Post a comment</h2>
         {% include ':post:comment-form.html.twig' %}
     </article>
+
 {% endblock %}

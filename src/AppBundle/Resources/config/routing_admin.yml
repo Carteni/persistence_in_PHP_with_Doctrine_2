@@ -1,0 +1,44 @@
+dashboard:
+  path: /dashboard
+  defaults: {_controller: AppBundle:Dashboard:index}
+
+#media:
+#    resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
+#    prefix: admin/media
+
+# Media
+media.list:
+    path: /media/
+    defaults: { _controller:AppBundle:Media:index }
+
+sonata_media_view:
+    path: /media/{id}/{format}
+    defaults: {_controller:AppBundle:Media:view}
+
+gallery:
+    resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
+    prefix: /media/gallery
+
+media.post.list:
+    path: /media/post
+
+media.post.add:
+    path: /media/post/add
+
+media.article.list:
+    path: /media/article/list
+
+media.article.add:
+    path: /media/article/add
+
+media.gallery.list:
+    path: /media/gallery
+
+media.gallery.create:
+    path: /media/gallery/create
+
+a1.route:
+    path: /a1
+
+a2.route:
+    path: /a2

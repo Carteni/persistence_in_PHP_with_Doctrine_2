@@ -81,4 +81,28 @@ abstract class Author {
     $this->email = $email;
   }
 
+
+    /**
+     * Set surname
+     *
+     * @param string $surname
+     *
+     * @return Author
+     */
+    public function setSurname($surname)
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * Get surname
+     *
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
 }

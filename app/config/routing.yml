@@ -16,6 +16,10 @@ user_context_hash:
 site:
     resource: "@AppBundle/Resources/config/routing_site.yml"
 
+admin:
+  resource: "@AppBundle/Resources/config/routing_admin.yml"
+  prefix: /admin
+
 blog:
   resource: "@AppBundle/Resources/config/routing_blog.yml"
   prefix: /admin/blog

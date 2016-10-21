@@ -2,8 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use Application\Sonata\MediaBundle\Entity\Gallery;
+use Application\Sonata\MediaBundle\Entity\Media;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Sonata\MediaBundle\Model\MediaInterface;
 
 /**
  * Class Post
@@ -38,6 +41,34 @@ class Post {
    * @ORM\Column(type="string")
    */
   protected $title;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(type="string")
+   */
+  protected $slug;
+
+  /**
+   * @var Media
+   * http://stackoverflow.com/questions/6328535/on-delete-cascade-with-doctrine2
+   *
+   * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"}, fetch="LAZY")
+   * @ORM\JoinColumns({
+   *     @ORM\JoinColumn(name="poster", referencedColumnName="id", onDelete="CASCADE")
+   *     })
+   */
+  protected $poster;
+
+  /**
+   * @var Gallery
+   *
+   * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery", fetch="LAZY", cascade={"remove","persist"})
+   * @ORM\JoinColumns({
+   *     @ORM\JoinColumn(name="gallery", referencedColumnName="id", onDelete="CASCADE")
+   * })
+   */
+  private $gallery;
 
   /**
    * @var string
@@ -257,4 +288,75 @@ class Post {
     $this->setPublicationDate(new \DateTime());
   }
 
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Post
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set poster
+     *
+     * @param MediaInterface $poster
+     *
+     * @return Post
+     */
+    public function setPoster(MediaInterface $poster = null)
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
+
+    /**
+     * Get poster
+     *
+     * @return MediaInterface
+     */
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    /**
+     * Set gallery
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Gallery $gallery
+     *
+     * @return Post
+     */
+    public function setGallery(\Application\Sonata\MediaBundle\Entity\Gallery $gallery = null)
+    {
+        $this->gallery = $gallery;
+
+        return $this;
+    }
+
+    /**
+     * Get gallery
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Gallery
+     */
+    public function getGallery()
+    {
+        return $this->gallery;
+    }
 }

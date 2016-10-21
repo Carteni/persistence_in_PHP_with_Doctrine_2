@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block content %}
+    <article>
+        <h1>{{ post.title }}</h1>
+        {% media post.poster, 'big' %}
+        <p>{{ post.body }}</p>
+        {% if post.gallery is not empty  %}
+            <section>
+                <h2>Post Gallery</h2>
+                {% for image in post.gallery.galleryHasMedias %}
+                    {% media image.media, 'small' %}
+                {% endfor %}
+            </section>
+        {%  endif %}
+        <a href="{{ url('site_homepage') }}">Back</a>
+    </article>
+{% endblock %}

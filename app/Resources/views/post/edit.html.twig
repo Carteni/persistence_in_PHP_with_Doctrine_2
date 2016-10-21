@@ -2,5 +2,12 @@
 
 {% block body_title %}Edit {{ post.title }}{% endblock %}
 {% block body_form %}
+    {% if post.gallery is not empty %}
+        <h4>Gallery: {{ post.gallery.name }} </h4>
+        {% for image in post.gallery.galleryHasMedias %}
+            {% media image.media, 'small' %} [<a href="{{ url('media_hasgallery.unlink',{postId: post.id, id:image.id}) }}">Unlink</a>]
+        {% endfor %}
+        <hr />
+    {%  endif %}
     {% include ':post:post-form.html.twig' %}
 {% endblock %}

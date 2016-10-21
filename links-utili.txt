@@ -1,0 +1,33 @@
+Sonata Media Bundle
+-------------------
+http://stackoverflow.com/questions/28921077/symfony-sonata-media-bundle-add-images-videos-to-a-user
+
+* There is no main category related to context, Upload.
+https://github.com/sonata-project/SonataMediaBundle/issues/707
+
+* SonataMediaBundle - How to use custom file input
+http://stackoverflow.com/questions/22081957/sonatamediabundle-how-to-use-custom-file-input
+
+* Symfony Sonata Media Bundle add images/videos to a user
+http://stackoverflow.com/questions/28921077/symfony-sonata-media-bundle-add-images-videos-to-a-user
+
+* On delete cascade with doctrine2
+http://stackoverflow.com/questions/6328535/on-delete-cascade-with-doctrine2
+
+* Sonata Media Bundle: Iterate thourgh medias in a Gallery?
+https://groups.google.com/forum/#!topic/sonata-users/ZSqKMWEk9RA
+
+* How to correctly delete all images uploaded using sonata-media-bundle
+http://stackoverflow.com/questions/25942476/how-to-correctly-delete-all-images-uploaded-using-sonata-media-bundle
+
+* Doctrine 2 OneToMany Cascade SET NULL
+http://stackoverflow.com/questions/8858645/doctrine-2-onetomany-cascade-set-null
+
+SICUREZZA
+
+* How does Symfony2 session fixation work?
+http://stackoverflow.com/questions/21129699/how-does-symfony2-session-fixation-work
+
+http://php-and-symfony.matthiasnoback.nl/2013/02/symfony2-security-enhancements-part-i/
+http://php-and-symfony.matthiasnoback.nl/2013/03/symfony2-security-enhancements-part-ii/
+Nell'esempio c'è un modo per invalidare le sessioni dopo N secondi.

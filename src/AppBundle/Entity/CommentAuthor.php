@@ -54,4 +54,28 @@ class CommentAuthor extends \AppBundle\Entity\Author {
   public function getComments() {
     return $this->comments;
   }
+
+    /**
+     * Set surname
+     *
+     * @param string $surname
+     *
+     * @return CommentAuthor
+     */
+    public function setSurname($surname)
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * Get surname
+     *
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
 }

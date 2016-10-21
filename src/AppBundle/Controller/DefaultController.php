@@ -9,6 +9,7 @@ use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\CoordinateType;
 use AppBundle\Form\Type\PostType;
 use AppBundle\Model\Address;
+use Application\Sonata\MediaBundle\Entity\GalleryHasMedia;
 use Doctrine\ORM\UnitOfWork;
 use Predis\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,8 +32,7 @@ class DefaultController extends Controller
      */
     public function siteIndexAction(Request $request)
     {
-        $posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll(
-        );
+        $posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll();
 
         $address = new Address();
         $address->setStreet('1500, Main Street');
@@ -82,6 +82,29 @@ class DefaultController extends Controller
         );
     }
 
+    /**
+     * @param \AppBundle\Entity\Post $post
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sitePostShowAction(Post $post) {
+
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        /*$media = new GalleryHasMedia();
+        $media->setGallery($post->getGallery());
+        $media->setMedia($post->getPoster());
+        $media->setEnabled(TRUE);
+        $em->persist($media);
+        $em->flush();*/
+
+        return $this->render(
+          ':site:post.html.twig',
+          array(
+              'post' => $post
+          )
+        );
+    }
+
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -94,8 +117,6 @@ class DefaultController extends Controller
           ->getDoctrine()
           ->getRepository('AppBundle:Post')
           ->findWithCommentCount();
-
-        $var = 1;
 
         //$this->get('snc_redis.default')->incr('foo:bar');
 
@@ -132,7 +153,7 @@ class DefaultController extends Controller
           )
         );
         if ($this->process($form, $post, $request)) {
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('post.edit', array('id'=>$post->getId()));
         }
 
         return $this->render(
@@ -152,14 +173,25 @@ class DefaultController extends Controller
      */
     protected function process(Form $form, Post $post, Request $request)
     {
+        $data = $form->getExtraData();
+
         $processed = false;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Inserito nel PostListener.
+            /*$post->setSlug(
+              $this->get('slugify')->slugify(
+                $post->getTitle()
+              )
+            );*/
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
 
 
             /**
+             * http://stackoverflow.com/questions/10800178/how-to-check-if-entity-changed-in-doctrine-2
              * @var UnitOfWork $uow
              */
             $uow = $em->getUnitOfWork();
@@ -175,6 +207,8 @@ class DefaultController extends Controller
              */
             //$client = $this->get('snc_redis.doctrine');
             //$client->del(array("[".md5('postWithComments')."][1]"));
+
+            $this->get('session')->getFlashBag()->add('post.success', sprintf('Post %s saved!',$post->getTitle()));
 
             $processed = true;
         }

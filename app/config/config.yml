@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: sonata_classification.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -39,7 +40,11 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
+        - 'bootstrap_3_layout.html.twig'
+        - 'SonataMediaBundle:Form:media_widgets.html.twig'
         - 'form/widgets.html.twig'
+    paths:
+        '%kernel.root_dir%/../src/AppBundle/Resources/views': AppBundle
 
 # Doctrine Configuration
 doctrine:
@@ -62,22 +67,36 @@ doctrine:
         #   3. Uncomment next line:
         #     path:     "%database_path%"
         schema_filter: ~^(?!t_)~
+        # https://gist.github.com/romansklenar/525030/38a0dd6a70e58f39e964ec53c746457dd37a5f58
+        # http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/types.html#custom-mapping-types
+        # http://stackoverflow.com/questions/4837589/doctrine-custom-data-type
+        types:
+            coordinates: AppBundle\ORM\Type\CoordinatesType
+            json: Sonata\Doctrine\Types\JsonType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
-        # enable metadata caching
-        metadata_cache_driver:
-            type: service
-            id: snc_redis.doctrine
-        # enable query caching
-        query_cache_driver:
-            type: service
-            id: snc_redis.doctrine
-        # enable results caching
-        result_cache_driver:
-            type: service
-            id: snc_redis.doctrine
+
+        entity_managers:
+            default:
+                auto_mapping: true
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                mappings:
+                    ApplicationSonataMediaBundle: ~
+                    SonataMediaBundle: ~
+                filters:
+                  - { name: 'post_by_author_filter', class: AppBundle\ORM\Filter\PostByAuthorFilter, enabled: false }
+                # enable metadata caching
+                metadata_cache_driver:
+                    type: service
+                    id: snc_redis.doctrine
+                # enable query caching
+                query_cache_driver:
+                    type: service
+                    id: snc_redis.doctrine
+                # enable results caching
+                result_cache_driver:
+                    type: service
+                    id: snc_redis.doctrine
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -170,8 +189,121 @@ fos_http_cache:
                 routes:
                     site_homepage: ~
 
+# Sonata Core
+sonata_core:
+    flashmessage:
+        success:
+            types:
+                - { type: post.success, domain: AppBundle }
+
+# Sonata Block
+sonata_block:
+    default_contexts: [sonata_page_bundle]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.block.service.text: ~
+        sonata.block.service.template: ~
+        sonata.media.block.media: ~
+        sonata.media.block.gallery: ~
+        sonata.media.block.feature_media: ~
+
+# Sonata Media Bundle
+sonata_media:
+    # if you don't use default namespace configuration
+    #class:
+        #media: Application\Sonata\MediaBundle\Entity\Media
+        #gallery: Application\Sonata\MediaBundle\Entity\Gallery
+        #gallery_has_media: Application\Sonata\MediaBundle\Entity\Media\GalleryHasMedia
+    providers:
+        image:
+            resizer: sonata.media.resizer.square
+    default_context: default
+    db_driver: doctrine_orm
+    contexts:
+        default:  # the default context is mandatory
+            providers:
+                - sonata.media.provider.image
+                - sonata.media.provider.file
+            formats:
+                preview: { width: 100, quality: 100}
+                small: { width: 100 , quality: 70}
+                big:   { width: 500 , quality: 70}
+        post:
+            providers:
+                - sonata.media.provider.image
+                - sonata.media.provider.file
+            formats:
+                preview: { width: 100, quality: 100}
+                small: { width: 100 , quality: 70}
+                big:   { width: 500 , quality: 70}
+    cdn:
+        server:
+            path: /uploads/media
+
+    filesystem:
+        local:
+            directory:  "%kernel.root_dir%/../web/uploads/media"
+            create:     false
+
 # GitHub OAuth
 app:
     github_oauth:
         client_id: '03d687dee778a74bda17'
         client_secret: '6e46fcd7bd01d6bfb8dfff1c3045484c6816f42b'
+
+    dashboard:
+      modules:
+        a:
+          label: A
+          icon: 'fa fa-code-fork'
+          actions: ~
+          children:
+            a1:
+              label: A1
+              icon: ~
+              actions:
+                - { label: 'View', route: 'a1.route', icon:'fa fa-code-fork' }
+            a2:
+              label: A2
+              icon: ~
+              actions:
+                - { label: 'View 2', route: 'a2.route', icon:'fa fa-code-fork' }
+
+        blog:
+          label: Blog
+          icon: 'fa fa-code-fork fa-fw'
+          actions:
+            - { label: 'List', route: 'homepage', icon:'fa fa-code-fork' }
+            - { label: 'New Post', route: 'post.create', icon: 'fa fa-plus' }
+          children: ~
+
+        media:
+          label: Media
+          icon: 'fa fa-code-fork fa-fw'
+          actions: ~
+          children:
+            post:
+              label: Post Media
+              icon: ~
+              actions:
+                - { label: List, route: 'media.post.list', icon: 'fa fa-code-fork' }
+                - { label: Add, route: 'media.post.add', icon: 'fa fa-plus' }
+            article:
+              label: Article Media
+              icon: ~
+              actions:
+                - { label: List, route: 'media.article.list', icon:'fa fa-code-fork' }
+                - { label: Add, route: 'media.article.add', icon: 'fa fa-plus' }
+
+        gallery:
+          label: Gallery
+          icon: 'fa fa-code-fork fa-fw'
+          actions:
+            - { label: List, route: 'media.gallery.list', icon:'fa fa-code-fork' }
+            - { label: New, route: 'media.gallery.create', icon: 'fa fa-plus' }
+          children: ~
+
+knp_menu:
+    twig:
+        template: 'AppBundle::menu.html.twig'

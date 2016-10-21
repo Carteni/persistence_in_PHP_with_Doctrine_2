@@ -1,3 +1,7 @@
 site_homepage:
   path: /
-  defaults: {_controller: AppBundle:Default:siteIndex }
+  defaults: {_controller: AppBundle:Default:siteIndex}
+
+post.slugify:
+  path: /post/{slug}
+  defaults: {_controller: AppBundle:Default:sitePostShow}

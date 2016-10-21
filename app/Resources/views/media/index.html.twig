@@ -1,0 +1,12 @@
+{% extends '::admin.index.html.twig' %}
+
+{% block body %}
+    <ul>
+    {% for media in medias %}
+       <li>
+           {% media media, 'small' %}
+           <a href="{{ url('sonata_media_view', { 'id' : media|sonata_urlsafeid , 'format' : 'small'}) }}">{{ media.name}}</a>
+       </li>
+    {% endfor %}
+    </ul>
+{%  endblock %}
